@@ -44,7 +44,7 @@ final_date <- ifelse(
 init_date <- ymd("2016-12-29")
 
 # Create a vector from start to end with a step size of 7 days.
-chart_ref_date <- seq(init_date, end_date, by = 7)
+chart_ref_date <- seq(init_date, final_date, by = 7)
 
 ### DOWNLOAD THE WEEKLY CHARTS ###
 # lapply: "List-Apply" (apply function to the elements of a list)
@@ -73,7 +73,9 @@ df <- df %>%
               bind_rows(),
             by = c("ID" = "id"))
 
-#### CHECK FOR CONSISTENCY, IF AN ERROR OCCURS HERE THE DATA IS INCONSISTENT ####
+###############################################################################################
+##### CHECK FOR CONSISTENCY ###################################################################
+# If an error is provoked by this command, the data is inconsistent
 df %>% pivot_wider(id_cols=ISRC_ID, names_from = Date, values_from = c(Position, Streams))
 
 # Unify the artist and track names for a given track.

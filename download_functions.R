@@ -1,15 +1,15 @@
 library(dplyr)
 library(spotifyr)
 library(readr)
+library(glue)
 
 ###############################################################################################
 ##### FUNCTIONS ###############################################################################
 
 ##### DOWNLOAD WEEKLY SPOTIFY CHARTS ##########################################################
 download_spotify_charts_weekly <- function(ref_date) {
-  print(ref_date)
   # In the drop-down menu Spotify refers to `date`, but the link looks differently.
-  url <- glue::glue("https://spotifycharts.com/regional/de/weekly/{ref_date - 6}--{ref_date + 1}/download")
+  url <- glue("https://spotifycharts.com/regional/de/weekly/{ref_date - 6}--{ref_date + 1}/download")
   
   # Skip the first row, as it contains the header.
   df <- read_csv(url, col_types = cols(
@@ -77,13 +77,13 @@ download_single_track_ISRC_ID <- function(TID) {
   get_track(TID) %>% {
     # Issue a message if the TID isn't available.
     if (is_null(.$external_ids$isrc)) {
-      message(glue::glue("Track with ID \"{TID}\" has been deleted from Spotify!\n",
-                         "Using the internal ID \"TID: {TID}\" as a substitude for ISRC ID."))}
+      message(glue("Track with ID \"{TID}\" has been deleted from Spotify!\n",
+                   "Using the internal ID \"TID: {TID}\" as a substitude for ISRC ID."))}
     
     # Use {...} notation to prevent the complete output to be piped as the first argument by default.
     {tibble(ISRC_ID = ifelse(is_null(.$external_ids$isrc),
                       # If the track isn't listed anymore, the only obtainable info is the artist ID.
-                      glue::glue("TID: {TID}"), 
+                      glue("TID: {TID}"), 
                       .$external_ids$isrc),
             #Release = ymd(.$album$release_date), 
             id = .$id)}
