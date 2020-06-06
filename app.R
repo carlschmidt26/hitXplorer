@@ -6,7 +6,7 @@ library(glue)
 library(shinyCustom)
 
 # Make the sliders work better.
-useShinyCustom(slider_policy = "debounce", slider_delay = "250")
+useShinyCustom(slider_policy = "debounce", slider_delay = "1000")
 
 df <- readRDS(url("https://github.com/Robsrepo42/hitXplorer/raw/master/Charts_fully_featured.Rds"))
 
@@ -341,7 +341,7 @@ server <- function(input, output, session) {
         grouping_ISRC <- unique(ISRC_ID)
         # Take the `Ref_positiona nd convert it to a string with a with of 2.`
         pos_string <- unique(Position) %>% 
-          str_pad(floor(log10(max_pos_in_range)), "left", "0")
+          str_pad(floor(log10(max_pos_in_range)) + 1, "left", "0")
         # Get the country code out of the ISRC_ID.
         # Note: If the ISRC_ID starts with "TID:" it refers the the internal Spotify ID.
         # The internal Spotify ID does not provide a country code and indicate a deleted track.
