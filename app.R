@@ -3,6 +3,10 @@ library(tidyverse)
 library(lubridate)
 library(plotly)
 library(glue)
+library(shinyCustom)
+
+# Make the sliders work better.
+useShinyCustom(slider_policy = "debounce", slider_delay = "250")
 
 df <- readRDS(url("https://github.com/Robsrepo42/hitXplorer/raw/master/Charts_fully_featured.Rds"))
 
@@ -41,14 +45,14 @@ ui <- fluidPage(
     # Column for date inputs (padding of 3% seems appropriate).
     column(width = 4, style="padding-left:3%; padding-right:3%;",
       # Input: Specification of date range within an interval.
-      sliderInput(inputId = "obs_range",
+      customSliderInput(inputId = "obs_range",
                   label = "Select the Range of Dates",
                   min = first_date, max = last_date,
                   value = range(df$Date), step = days(7),
                   ticks = FALSE),
       
       # Input: Specification of reference date.
-      sliderInput(inputId = "ref_date",
+      customSliderInput(inputId = "ref_date",
                   label = "Choose a Reference Date",
                   min = first_date, max = last_date,
                   value = first_date, step = days(7), 
@@ -57,14 +61,14 @@ ui <- fluidPage(
     # Column for track and position inputs (padding of 3% seems appropriate)
     column(width = 4, style="padding-left:3%; padding-right:3%;",
       # Input: Specification of number of tracks.
-      sliderInput(inputId = "track_nums",
+      customSliderInput(inputId = "track_nums",
                   label = "Choose the Number of Tracks",
                   min = 1L, max = 20L,
                   value = 10L, step = 1L, 
                   ticks = FALSE),
       
       # Input: Specification of range of tracks.
-      sliderInput(inputId = "pos_range",
+      customSliderInput(inputId = "pos_range",
                   label = "Select the Range of Positions",
                   min = 1L, max = 200L,
                   value = c(1L, 10L), step = 1L, 
